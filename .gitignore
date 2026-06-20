@@ -1,0 +1,12 @@
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Local environment files containing private keys
+.env
+.env.local
+.env.production
+
+# Operating system files
+.DS_Store
+Thumbs.db
