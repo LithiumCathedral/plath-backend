@@ -7,7 +7,7 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Content Matrix for Archetypes & Core Vectors
+// Comprehensive Content Matrix for Archetypes & Core Vectors
 const archetypeRepository = {
     "Harmonic Convergence": {
         subtitle: "The Synthesized Network Node",
@@ -46,6 +46,7 @@ const numberProfiles = {
     }
 };
 
+// Main dynamic report processing route
 app.post('/generate-report', (req, res) => {
     try {
         const { fullName, currentName, birthDate } = req.body;
@@ -54,35 +55,41 @@ app.post('/generate-report', (req, res) => {
             return res.status(400).send('Missing critical data anchors.');
         }
 
+        // Reformat standard HTML YYYY-MM-DD input cleanly for engine.py parsing
         const [year, month, day] = birthDate.split('-');
         const formattedDate = `${month}-${day}-${year}`;
 
+        // Explicitly map frontend keys to match snake_case variables in engine.py dictionary keys
         const inputData = JSON.stringify({
             full_birth_name: fullName,
             current_name: currentName,
             dob: formattedDate
         });
 
+        // Spawn engine.py execution process
         const pythonProcess = spawn('python3', [path.join(__dirname, 'engine.py')]);
         let pythonData = '';
         
         pythonProcess.stdin.write(inputData);
         pythonProcess.stdin.end();
 
-        pythonProcess.stdout.on('data', (data) => { pythonData += data.toString(); });
+        pythonProcess.stdout.on('data', (data) => { 
+            pythonData += data.toString(); 
+        });
 
         pythonProcess.on('close', (code) => {
             if (code !== 0) {
+                console.error(`Python script exited with crash code: ${code}`);
                 return res.status(500).send("Engine calculation failure.");
             }
 
             const metrics = JSON.parse(pythonData);
             
-            // Extract rich data profiles based on numeric indices
+            // Extract profile copy from repository matrix
             const archData = archetypeRepository[metrics.archetype] || archetypeRepository["Dynamic Adaptation"];
             const lpProfile = numberProfiles.lifePath[metrics.life_path] || "Unassigned Matrix Coordinate";
 
-            // Map data out to match clean slide layouts
+            // Aggregate data payload for template parsing
             const dataPayload = {
                 fullName: fullName.toUpperCase(),
                 currentName: currentName.toUpperCase(),
@@ -106,12 +113,12 @@ app.post('/generate-report', (req, res) => {
                 alignment: metrics.alignment_coefficient
             };
 
-            // Inject metrics dynamically into the visual framework template
+            // Load HTML Template and inject mapped payload tokens
             const templatePath = path.join(__dirname, 'report-template.html');
             let htmlResponse = fs.readFileSync(templatePath, 'utf8');
 
             Object.keys(dataPayload).forEach(key => {
-                const regex = new RegExp(`{{${key}}`, 'g');
+                const regex = new RegExp(`{{${key}}}`, 'g');
                 htmlResponse = htmlResponse.replace(regex, dataPayload[key]);
             });
 
@@ -119,12 +126,21 @@ app.post('/generate-report', (req, res) => {
         });
 
     } catch (error) {
+        console.error("Engine Fault detected during execution: ", error);
         res.status(500).send("Internal System Error: Telemetry engine collapsed.");
     }
 });
 
-app.get('/', (req, res) => { res.send("// PLATH Engine backend is live."); });
-app.get('/generate-report', (req, res) => { res.send("Submit via frontend portal."); });
+// Root fallback route to verify active container health status
+app.get('/', (req, res) => { 
+    res.send("// PLATH Engine backend factory is live and listening on port 8080."); 
+});
+
+// Safety route to block plain GET parameters to processing terminal
+app.get('/generate-report', (req, res) => { 
+    res.send("Missing critical data anchors. Please submit via the frontend portal."); 
+});
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => { console.log(`// PLATH Engine running on port ${PORT}`); });
+app.listen(PORT, () => { 
+    console.log(`// PLATH Engine running smoothly on port ${PORT}`);
