@@ -106,10 +106,10 @@ app.post('/generate-report', (req, res) => {
                 const templatePath = path.join(__dirname, 'report-template.html');
                 let htmlResponse = fs.readFileSync(templatePath, 'utf8');
 
-                Object.keys(dataPayload).forEach(key => {
-                    const regex = new RegExp(`{{${key}}}`, 'g');
-                    htmlResponse = htmlResponse.replace(regex, dataPayload[key]);
-                });
+Object.keys(dataPayload).forEach(key => {
+    const regex = new RegExp(`{{${key}}}`, 'g');
+    htmlResponse = htmlResponse.replace(regex, dataPayload[key]);
+});
 
                 res.send(htmlResponse);
             } catch (jsonErr) {
