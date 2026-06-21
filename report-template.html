@@ -272,5 +272,26 @@
         }
         window.onload = drawVisualSigil;
     </script>
+    <button class="share-btn" onclick="executeNativeShare()">Share Telemetry</button>
+
+<script>
+function executeNativeShare() {
+    const reportUrl = window.location.href; // Captures the exact, unique session link dynamically
+    
+    if (navigator.share) {
+        navigator.share({
+            title: 'PLATH // System Core Telemetry Finalized',
+            text: 'Extracting my structural alignment matrix data signature. View profile analytics.',
+            url: reportUrl
+        })
+        .then(() => console.log('Telemetry payload shared securely.'))
+        .catch((error) => console.log('Share vector interrupted:', error));
+    } else {
+        // Desktop clipboard fallback routine
+        navigator.clipboard.writeText(reportUrl);
+        alert('Unique telemetry link securely copied to your system clipboard for device sharing.');
+    }
+}
+</script>
 </body>
 </html>
