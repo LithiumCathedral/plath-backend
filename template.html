@@ -2,44 +2,82 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Your Brainsalt Soul Print Report</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PLATH // Telemetry Finalized</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        @media print { .no-print { display: none; } .page-break { page-break-after: always; } }
-        body { background-color: #0b0f19; color: #f3f4f6; font-family: sans-serif; }
+        :root {
+            --plath-orange: #FF3300; --plath-black: #000000; --plath-dark-grey: #111111;
+            --plath-border: #333333; --plath-text-main: #FFFFFF; --plath-text-dim: #999999;
+            --font-stack: 'JetBrains Mono', monospace;
+        }
+        body { background-color: var(--plath-black); color: var(--plath-text-main); font-family: var(--font-stack); margin: 0; padding: 0; }
+        header { border-bottom: 1px solid var(--plath-border); padding: 20px; display: flex; justify-content: space-between; }
+        .logo span { color: var(--plath-orange); }
+        .container { max-width: 750px; margin: 40px auto 80px; padding: 0 20px; }
+        .dashboard-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 40px; }
+        @media (max-width: 600px) { .dashboard-grid { grid-template-columns: 1fr; } }
+        .metric-card { background-color: var(--plath-dark-grey); border: 1px solid var(--plath-border); padding: 20px; }
+        .metric-card.highlight { border-color: var(--plath-orange); }
+        .metric-label { font-size: 0.75rem; color: var(--plath-orange); text-transform: uppercase; margin-bottom: 5px; }
+        .metric-value { font-size: 1.1rem; font-weight: 600; }
+        .story-section { border: 1px solid var(--plath-border); background-color: var(--plath-dark-grey); padding: 40px; }
+        .story-header { border-bottom: 1px solid var(--plath-border); padding-bottom: 15px; margin-bottom: 30px; display: flex; justify-content: space-between; }
+        .story-title { font-size: 1.4rem; text-transform: uppercase; margin: 0; }
+        .story-body p { font-size: 1rem; line-height: 1.8; margin-bottom: 20px; }
+        .action-footer { margin-top: 30px; display: flex; gap: 15px; }
+        .btn { flex: 1; padding: 15px; text-align: center; text-decoration: none; font-weight: 600; text-transform: uppercase; font-size: 0.9rem; cursor: pointer; font-family: var(--font-stack); }
+        .btn-primary { background-color: var(--plath-orange); color: #000; border: none; }
+        .btn-secondary { background-color: transparent; color: var(--plath-text-dim); border: 1px solid var(--plath-border); }
+        
+        /* Web Story Export Layout Modification */
+        @media print {
+            header, .action-footer, .metric-card:not(.highlight) { display: none !important; }
+            body { background-color: #000000; }
+            .container { margin: 0; padding: 0; max-width: 100%; }
+            .story-section { border: none; background: transparent; padding: 0; }
+        }
     </style>
 </head>
-<body class="p-8">
-    <div id="story-wrapper" class="max-w-md mx-auto bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl my-8">
-        
-        <div class="slide mb-12 border-b border-slate-800 pb-8">
-            <span class="text-xs font-bold text-cyan-400 tracking-widest uppercase">Slide 0: [ VISUAL ARCHETYPE: {{archetype}} ]</span>
-            <h1 class="text-3xl font-extrabold mt-2 text-white">{{uspc_score}} Core Alignment</h1>
-            <p class="text-slate-400 mt-1 text-sm italic">The Macro Identity Blueprint</p>
-            <div class="mt-4 space-y-2 text-sm bg-slate-950 p-4 rounded-xl border border-slate-800">
-                <p>✨ <strong class="text-slate-300">Spiritual Path (Life Path):</strong> <span class="text-cyan-400 font-mono text-base font-bold">{{life_path}}</span></p>
-                <p>🧠 <strong class="text-slate-300">Conscious Talent (Expression):</strong> <span class="text-cyan-400 font-mono text-base font-bold">{{expression}}</span></p>
-                <p>🔒 <strong class="text-slate-300">Subconscious Default:</strong> <span class="text-cyan-400 font-mono text-base font-bold">{{subconscious_num}}</span></p>
+<body>
+    <header>
+        <div class="logo"><span>PLATH</span>//ENGINE</div>
+        <div>// TELEMETRY_RESOLVED</div>
+    </header>
+    <div class="container">
+        <div class="dashboard-grid">
+            <div class="metric-card">
+                <div class="metric-label">Identity Anchor</div>
+                <div class="metric-value">{{fullName}}</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Node Alias</div>
+                <div class="metric-value">{{currentName}}</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Temporal Origin</div>
+                <div class="metric-value">{{birthDate}}</div>
+            </div>
+            <div class="metric-card highlight">
+                <div class="metric-label">Calculated Matrix</div>
+                <div class="metric-value" style="color: var(--plath-orange);">{{matrixId}}</div>
             </div>
         </div>
 
-        <div class="slide mb-12 border-b border-slate-800 pb-8">
-            <span class="text-xs font-bold text-amber-400 tracking-widest uppercase">Slide 1: [ INSTINCTUAL PROFILE ]</span>
-            <h2 class="text-2xl font-bold mt-1 text-white">SCQ Quotient: {{scq}} / 9</h2>
-            <p class="text-slate-400 mt-2 text-sm">Missing Archetypal Matrix Vectors: <span class="text-amber-400 font-mono font-bold">{{missing_vectors}}</span></p>
-            <p class="text-slate-400 mt-2 text-xs leading-relaxed">Vulnerability metrics register complete survival default stability, bypassing conventional structures under duress.</p>
+        <div class="story-section">
+            <div class="story-header">
+                <h2 class="story-title">The Generated Narrative</h2>
+                <span style="color: var(--plath-text-dim);">// RUN_01</span>
+            </div>
+            <div class="story-body">
+                <p>{{generatedStory}}</p>
+            </div>
         </div>
 
-        <div class="slide mb-4">
-            <span class="text-xs font-bold text-rose-400 tracking-widest uppercase">Slide 3: [ RISK ASSESSMENT ]</span>
-            <h2 class="text-2xl font-bold mt-1 text-white">Habit Climax Vector: {{hcv}}</h2>
-            <p class="text-slate-400 mt-2 text-sm">Self-Sabotage Frequency Loop Signature</p>
-            <p class="text-slate-400 mt-2 text-xs leading-relaxed">Triggers dynamic unconscious distraction matrices precisely before major career milestones occur.</p>
+        <div class="action-footer">
+            <button class="btn btn-secondary" onclick="window.print()">Export Webstory</button>
+            <a href="https://plath.vercel.app" class="btn btn-primary">Restart Engine</a>
         </div>
-
-        <button onclick="alert('Native System Web Share Protocol Dispatched To Native Device Environment!')" class="no-print w-full mt-6 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:opacity-90 transition text-center text-sm cursor-pointer">
-            🔗 Share Blueprint Engine to Story
-        </button>
     </div>
 </body>
 </html>
