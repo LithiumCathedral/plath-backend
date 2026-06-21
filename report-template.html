@@ -8,10 +8,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;800&display=swap" rel="stylesheet">
     
-    <meta property="og:title" content="PLATH // Engine Matrix Finalized">
-    <meta property="og:description" content="Telemetry output confirmed for profile {{{matrixId}}}. Access your structural system profile alignment score.">
-    <meta property="og:type" content="website">
-    
     <style>
         :root {
             --orange: #FF3300;
@@ -144,9 +140,9 @@
             </div>
             <div class="card-body">
                 <h2>System Identity Verified</h2>
-                <h1 style="margin-bottom: 20px;">{{{currentName}}}</h1>
-                <p>Structural alignment scanning finalized for architectural node <strong>{{{fullName}}}</strong>.</p>
-                <p class="accent-text">Temporal Coordinate Record: {{{birthDate}}}<br>System Registry Footprint: {{{matrixId}}}</p>
+                <h1 style="margin-bottom: 20px;">{{currentName}}</h1>
+                <p>Structural alignment scanning finalized for architectural node <strong>{{fullName}}</strong>.</p>
+                <p class="accent-text">Temporal Coordinate Record: {{birthDate}}<br>System Registry Footprint: {{matrixId}}</p>
             </div>
             <div class="card-footer">
                 <span style="color: var(--dim);">SCROLL TO EXTRACT DATA</span>
@@ -155,3 +151,84 @@
         </section>
 
         <section class="story-card">
+            <div class="card-header">
+                <div>CORE LOGIC MATRIX // VARIANCE</div>
+                <div class="highlight">02/04</div>
+            </div>
+            <div class="card-body" style="text-align: center;">
+                <h2>Unified Soul Print Core (USPC)</h2>
+                <div class="score-display">{{uspcScore}}</div>
+                <p style="margin-top: 15px; text-align: left;">Your core blueprint profile calculates out to an exact system convergence archetypal framework of:</p>
+                <h1 style="font-size: 1.5rem; text-align: left; margin-top: 10px; color: var(--orange);">{{archetype}}</h1>
+                <p style="color: var(--dim); font-size: 0.8rem; text-align: left; margin-top: 5px;">// Blueprint Template Sub-classification: {{archSubtitle}}</p>
+            </div>
+            <div class="card-footer">
+                <span>PLATH ENGINE V1.0</span>
+                <span>↓↓</span>
+            </div>
+        </section>
+
+        <section class="story-card">
+            <div class="card-header">
+                <div>BLUEPRINT DEPLOYMENT // SYSTEM CORE</div>
+                <div class="highlight">03/04</div>
+            </div>
+            <div class="card-body">
+                <h2>Strategic Profile Assessment</h2>
+                <p style="font-size: 0.85rem; margin-bottom: 20px;">{{archDesc}}</p>
+                
+                <h2 style="font-size: 0.75rem; color: #FFF; border-bottom: 1px solid var(--border); padding-bottom: 4px;">Systemic Liability (Shadow Vector)</h2>
+                <p style="font-size: 0.8rem; color: var(--dim); margin-bottom: 20px;">{{archShadow}}</p>
+                
+                <h2 style="font-size: 0.75rem; color: #FFF; border-bottom: 1px solid var(--border); padding-bottom: 4px;">Execution Integration Architecture</h2>
+                <p style="font-size: 0.8rem; color: var(--dim); margin-bottom: 0;">{{archStrategy}}</p>
+            </div>
+            <div class="card-footer">
+                <span>INTEGRATION SECURE</span>
+                <span>↓↓</span>
+            </div>
+        </section>
+
+        <section class="story-card">
+            <div class="card-header">
+                <div>METRIC DATA MATRIX // VECTOR COMPLETE</div>
+                <div class="highlight">04/04</div>
+            </div>
+            <div class="card-body">
+                <h2>Calculated Structural Coordinates</h2>
+                <p>Your calculated system integer coordinates are broken down below across the key numeric layers:</p>
+                
+                <div class="data-grid">
+                    <div class="grid-item">
+                        <div class="grid-label">Life Path Vector</div>
+                        <div class="grid-value" style="color: var(--orange);">{{lifePath}}</div>
+                    </div>
+                    <div class="grid-item">
+                        <div class="grid-label">Expression Coeff.</div>
+                        <div class="grid-value">{{expression}}</div>
+                    </div>
+                    <div class="grid-item">
+                        <div class="grid-label">Subconscious Node</div>
+                        <div class="grid-value">{{subconscious}}</div>
+                    </div>
+                    <div class="grid-item">
+                        <div class="grid-label">Habit Climax (HCV)</div>
+                        <div class="grid-value">{{hcv}}</div>
+                    </div>
+                </div>
+                
+                <p class="accent-text" style="margin-top: 20px; font-size: 0.75rem;">
+                    <strong>Active Anchor Alignment:</strong> {{lifePathTitle}}<br>
+                    <strong>Calculated Tension Divergence Gap:</strong> {{alignment}}
+                </p>
+            </div>
+            <div class="card-footer">
+                <button class="share-btn" onclick="navigator.clipboard.writeText(window.location.href); alert('Secure profile link copied to deployment clipboard.');">Share Telemetry Matrix</button>
+                <span style="color: var(--dim);">SYSTEM STABLE // END</span>
+            </div>
+        </section>
+
+    </div>
+
+</body>
+</html>
