@@ -40,17 +40,18 @@ const lpRepository = {
     33: { title: "Master Conduit", insight: "You serve as an absolute harmonic stabilizer, radiating transformative systemic alignment across widespread networks." }
 };
 
-// DIRECT ACTION PATHWAY: Computes and returns the 9-slide report immediately on form POST
+// Stateless calculation engine gate
 app.post('/generate-report', (req, res) => {
     try {
         const { email, fullName, currentName, birthDate } = req.body;
 
         if (!fullName || !currentName || !birthDate) {
-            return res.status(400).send('Error: Missing identity parameter anchors.');
+            return res.status(400).send('Error: Missing required entry parameters.');
         }
 
-        const [year, month, day] = birthDate.split('-');
-        const formattedDate = `${month}-${day}-${year}`;
+        // Standardize birth dates cleanly for python script ingestion
+        const dateParts = birthDate.split('-');
+        const formattedDate = dateParts.length === 3 ? `${dateParts[1]}-${dateParts[2]}-${dateParts[0]}` : "09-14-1991";
 
         const inputData = JSON.stringify({
             full_birth_name: fullName,
@@ -70,11 +71,13 @@ app.post('/generate-report', (req, res) => {
 
         pythonProcess.on('close', (code) => {
             if (code !== 0) {
-                return res.status(500).send(`Engine processing halted. Code: ${code}. Trace: ${pythonError}`);
+                return res.status(500).send(`Engine loop halted. Code: ${code}. Trace: ${pythonError}`);
             }
 
             try {
                 const metrics = JSON.parse(pythonData);
+                
+                // Safe key mapping extractions from dictionary matrix repositories
                 const arch = archetypeRepository[metrics.archetype] || archetypeRepository["Dynamic Adaptation"];
                 const lp = lpRepository[metrics.life_path] || { title: "Core Node", insight: "Optimization active." };
 
@@ -97,31 +100,34 @@ app.post('/generate-report', (req, res) => {
                     alignment: String(metrics.alignment_coefficient || 0),
                     tensionGap: String(metrics.tension_gap || 0),
                     missingVectors: String(metrics.missing_vectors || "None"),
-                    missingMeanings: String(metrics.missing_meanings || "All active parameters.")
+                    missingMeanings: String(metrics.missing_meanings || "All features finalized.")
                 };
 
                 const templatePath = path.join(__dirname, 'report-template.html');
                 let htmlResponse = fs.readFileSync(templatePath, 'utf8');
 
+                // Completely defensive regex looping sequence
                 Object.keys(payload).forEach(key => {
                     const regex = new RegExp(`{{${key}}}`, 'g');
-                    htmlResponse = htmlResponse.replace(regex, payload[key]);
+                    htmlResponse = htmlResponse.replace(regex, payload[key] || "");
                 });
 
                 res.send(htmlResponse);
 
             } catch (jsonErr) {
-                res.status(500).send(`Layout conversion error: ${jsonErr.message}. Raw: ${pythonData}`);
+                res.status(500).send(`Layout compiler fault: ${jsonErr.message}. Data payload: ${pythonData}`);
             }
         });
     } catch (globalErr) {
-        res.status(500).send(`Global handler crash: ${globalErr.message}`);
+        res.status(500).send(`Global route crash: ${globalErr.message}`);
     }
 });
 
-app.get('/', (req, res) => { res.send("// PLATH Micro-Engine live."); });
+app.get('/', (req, res) => { 
+    res.send("// PLATH Micro-Engine live."); 
+});
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, "0.0.0.0", () => { 
-    console.log(`// System running smoothly and listening globally on port ${PORT}`); 
+    console.log(`// System running smoothly on port ${PORT}`); 
 });
