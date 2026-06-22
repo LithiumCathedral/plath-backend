@@ -4,7 +4,6 @@ const fs = require('fs');
 const { spawn } = require('child_process');
 const app = express();
 
-// Enable handling for both standard HTML form submissions and raw JSON payloads
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -41,32 +40,27 @@ const lpRepository = {
     33: { title: "Master Conduit", insight: "You serve as an absolute harmonic stabilizer, radiating transformative systemic alignment across widespread networks." }
 };
 
-// Main execution route mapped to your frontend form action URL
 app.post('/generate-report', (req, res) => {
     try {
         const { email, fullName, currentName, birthDate } = req.body;
 
         if (!fullName || !currentName || !birthDate) {
-            return res.status(400).send('Error: Missing identity parameter anchors.');
+            return res.status(400).send('Error: Missing required entry parameters.');
         }
 
-        // Cleanly isolate standard HTML YYYY-MM-DD input strings
         const dateParts = birthDate.split('-');
         const formattedDate = dateParts.length === 3 ? `${dateParts[1]}-${dateParts[2]}-${dateParts[0]}` : "09-14-1991";
 
-        // CRITICAL INTERFACE ALIGNMENT: 
-        // Explicitly map properties to match the snake_case keys expected by engine.py
         const inputData = JSON.stringify({
-            full_birth_name: String(fullName),
-            current_name: String(currentName),
-            dob: String(formattedDate)
+            full_birth_name: fullName,
+            current_name: currentName,
+            dob: formattedDate
         });
 
         const pythonProcess = spawn('python3', [path.join(__dirname, 'engine.py')]);
         let pythonData = '';
         let pythonError = '';
 
-        // Pass the properly structured JSON data directly into the Python process stdin stream
         pythonProcess.stdin.write(inputData);
         pythonProcess.stdin.end();
         
@@ -81,7 +75,7 @@ app.post('/generate-report', (req, res) => {
             try {
                 const metrics = JSON.parse(pythonData);
                 const arch = archetypeRepository[metrics.archetype] || archetypeRepository["Dynamic Adaptation"];
-                const lp = lpRepository[metrics.life_path] || { title: "Core Node", insight: "Baseline optimization active." };
+                const lp = lpRepository[metrics.life_path] || { title: "Core Node", insight: "Optimization active." };
 
                 const payload = {
                     fullName: String(fullName).toUpperCase(),
@@ -102,7 +96,7 @@ app.post('/generate-report', (req, res) => {
                     alignment: String(metrics.alignment_coefficient || 0),
                     tensionGap: String(metrics.tension_gap || 0),
                     missingVectors: String(metrics.missing_vectors || "None"),
-                    missingMeanings: String(metrics.missing_meanings || "All native parameters active.")
+                    missingMeanings: String(metrics.missing_meanings || "All features finalized.")
                 };
 
                 const templatePath = path.join(__dirname, 'report-template.html');
@@ -116,6 +110,19 @@ app.post('/generate-report', (req, res) => {
                 res.send(htmlResponse);
 
             } catch (jsonErr) {
-                res.status(500).send(`Layout template data mapping fault: ${jsonErr.message}. Output array received: ${pythonData}`);
+                res.status(500).send(`Layout template data mapping fault: ${jsonErr.message}`);
             }
         });
+    } catch (globalErr) {
+        res.status(500).send(`Global data routing crash: ${globalErr.message}`);
+    }
+});
+
+app.get('/', (req, res) => { 
+    res.send("// PLATH Micro-Engine live."); 
+});
+
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, "0.0.0.0", () => { 
+    console.log(`// System listening globally on host port ${PORT}`); 
+});
